@@ -2,8 +2,8 @@
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FUNWORLD — лампова кімната + профіль</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>FUNWORLD — лампова кімната + адмін панель (пароль 123)</title>
     <style>
         * {
             margin: 0;
@@ -17,7 +17,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 16px;
+            padding: 8px;
         }
         .phone {
             max-width: 420px;
@@ -31,7 +31,7 @@
         }
         /* Екран авторизації (темна кімната) */
         #auth-screen {
-            min-height: 700px;
+            min-height: 100vh;
             background: #0a0c14;
             display: flex;
             flex-direction: column;
@@ -39,7 +39,7 @@
             justify-content: center;
             transition: background 0.5s, box-shadow 0.5s;
             position: relative;
-            padding: 30px 20px;
+            padding: 20px;
         }
         #auth-screen.light {
             background: #2a3347;
@@ -51,8 +51,14 @@
             position: relative;
             width: 200px;
             height: 280px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             filter: drop-shadow(0 15px 10px rgba(0,0,0,0.7));
+            transform: scale(0.9);
+        }
+        @media (max-width: 360px) {
+            .lamp {
+                transform: scale(0.8);
+            }
         }
         .lamp-chain {
             position: absolute;
@@ -199,25 +205,23 @@
 
         /* Вимикач */
         .switch {
-            width: 80px;
-            height: 120px;
+            width: 70px;
+            height: 100px;
             background: linear-gradient(145deg, #3e3e40, #1e1e22);
             border-radius: 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-around;
-            padding: 20px 0;
+            padding: 15px 0;
             cursor: pointer;
-            margin-bottom: 30px;
-            box-shadow: 0 15px 0 #0a0a0c, 0 5px 20px rgba(0,0,0,0.8);
+            margin-bottom: 20px;
+            box-shadow: 0 10px 0 #0a0a0c, 0 5px 20px rgba(0,0,0,0.8);
             border: 1px solid #5f5f6b;
-            position: relative;
-            z-index: 30;
         }
         .switch .toggle {
-            width: 50px;
-            height: 30px;
+            width: 40px;
+            height: 25px;
             background: #555;
             border-radius: 40px;
             transition: 0.3s;
@@ -229,8 +233,8 @@
             box-shadow: 0 0 25px #ffb347, inset 0 2px 5px #c17f2a;
         }
         .switch-knob {
-            width: 30px;
-            height: 30px;
+            width: 25px;
+            height: 25px;
             background: radial-gradient(circle at 30% 30%, #ddd, #888);
             border-radius: 50%;
             box-shadow: inset -2px -2px 5px #2a2a2a, inset 2px 2px 5px #ffffff30;
@@ -239,12 +243,12 @@
 
         /* Підказка */
         .hint {
-            font-size: 16px;
+            font-size: 15px;
             color: #9aa5c9;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             background: rgba(0,0,0,0.5);
-            padding: 12px 24px;
+            padding: 10px 20px;
             border-radius: 50px;
             backdrop-filter: blur(5px);
             border: 1px solid #5f6a84;
@@ -254,12 +258,14 @@
         /* Кнопки реєстрації/входу */
         .auth-buttons {
             display: flex;
-            gap: 20px;
+            gap: 15px;
             margin-top: 20px;
             opacity: 0;
             transform: translateY(20px);
             transition: 0.4s;
             pointer-events: none;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         .auth-buttons.visible {
             opacity: 1;
@@ -267,20 +273,20 @@
             pointer-events: all;
         }
         .auth-btn {
-            width: 140px;
-            padding: 16px 0;
+            width: 130px;
+            padding: 14px 0;
             border: none;
             border-radius: 60px;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 8px 0 #7f6139, 0 10px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 6px 0 #7f6139, 0 10px 20px rgba(0,0,0,0.3);
             transition: 0.1s ease;
             border: 1px solid #ffdd99;
             text-shadow: 0 1px 2px black;
         }
         .auth-btn:active {
-            transform: translateY(8px);
+            transform: translateY(6px);
             box-shadow: 0 2px 0 #7f6139;
         }
         .auth-btn.register {
@@ -295,10 +301,10 @@
         /* Контейнери форм */
         .auth-form-container {
             width: 100%;
-            margin-top: 30px;
+            margin-top: 20px;
             background: #1e2434;
-            padding: 25px;
-            border-radius: 40px;
+            padding: 20px;
+            border-radius: 30px;
             transition: 0.3s;
             opacity: 0;
             transform: scale(0.9);
@@ -313,46 +319,45 @@
         }
         .auth-form h3 {
             color: #ffb347;
-            margin-bottom: 20px;
-            font-size: 24px;
+            margin-bottom: 15px;
+            font-size: 22px;
         }
         .auth-form input {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 15px;
+            padding: 12px 15px;
+            margin-bottom: 12px;
             background: #272f41;
             border: 1px solid #3a455b;
             border-radius: 30px;
             color: #fff;
-            font-size: 16px;
-            padding-left: 20px;
+            font-size: 15px;
         }
         .auth-form button[type="submit"] {
             background: #ffb347;
             border: none;
             color: #0b0e14;
             font-weight: bold;
-            padding: 16px;
+            padding: 14px;
             border-radius: 40px;
             width: 100%;
             cursor: pointer;
-            font-size: 18px;
-            margin-top: 10px;
+            font-size: 17px;
+            margin-top: 5px;
         }
         .back-btn {
             background: none;
             border: 2px solid #5f6a84;
             color: #b3c7ff;
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 40px;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
+            font-size: 15px;
+            margin-top: 12px;
             width: 100%;
         }
         .auth-error {
             color: #ff6666;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-size: 14px;
             text-align: center;
         }
@@ -363,27 +368,49 @@
         }
         .header {
             background: #1e2434;
-            padding: 20px 16px 12px;
+            padding: 15px 16px 10px;
             border-bottom: 1px solid #2c3348;
         }
         .header h1 {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
             color: #ffffff;
         }
         .header h1 span {
             color: #ffb347;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 400;
-            margin-left: 8px;
+            margin-left: 5px;
         }
         .server-meta {
             display: flex;
             justify-content: space-between;
-            margin-top: 12px;
-            font-size: 14px;
+            margin-top: 10px;
+            font-size: 13px;
             color: #9aa5c9;
+        }
+        /* Кнопка IP */
+        .ip-block {
+            background: #2a3347;
+            margin: 8px 16px;
+            padding: 12px 16px;
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border: 1px solid #ffb347;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+        .ip-block:hover {
+            background: #3f5068;
+        }
+        .copy-indicator {
+            font-size: 20px;
         }
         .admin-section {
             background: #171d2b;
@@ -517,13 +544,15 @@
             background: #1a1f2e;
             padding: 10px 0 16px;
             border-top: 1px solid #2c3348;
+            flex-wrap: wrap;
         }
         .nav-item {
             color: #6f7c9f;
             text-align: center;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             cursor: pointer;
+            padding: 5px;
         }
         .nav-item.active {
             color: #ffb347;
@@ -541,38 +570,73 @@
         .admin-panel-link:hover {
             color: #ffb347;
         }
+        /* Адмін панель з табами */
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0 20px;
+        }
+        .admin-tab {
+            background: #2a3347;
+            padding: 10px 20px;
+            border-radius: 40px;
+            cursor: pointer;
+            color: #b3c7ff;
+            font-weight: 600;
+            transition: 0.2s;
+            border: 1px solid #4f5b7a;
+        }
+        .admin-tab.active {
+            background: #ffb347;
+            color: #0b0e14;
+            border-color: #ffb347;
+        }
+        .admin-tab:hover {
+            background: #3f5068;
+        }
         .admin-table {
             width: 100%;
             border-collapse: collapse;
             background: #171d2b;
             border-radius: 20px;
             overflow: hidden;
+            font-size: 13px;
         }
         .admin-table th {
             background: #1e2434;
             color: #ffd966;
-            padding: 10px;
+            padding: 8px;
             text-align: left;
         }
         .admin-table td {
-            padding: 10px;
+            padding: 8px;
             border-bottom: 1px solid #2c3348;
         }
         .status-pending { color: #ffaa66; }
         .status-approved { color: #66ff99; }
         .status-rejected { color: #ff6666; }
         .btn-small {
-            padding: 4px 10px;
+            padding: 4px 8px;
             border: none;
             border-radius: 20px;
             font-weight: bold;
             cursor: pointer;
-            font-size: 12px;
-            margin-right: 4px;
+            font-size: 11px;
+            margin-right: 3px;
         }
         .btn-approve { background: #2e7d5e; color: white; }
         .btn-reject { background: #b34b4b; color: white; }
         .btn-view { background: #3a4a6b; color: white; }
+        .btn-refresh {
+            background: #4f5b7a;
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            margin-left: 10px;
+        }
         .detail-card {
             background: #1e2434;
             border-radius: 24px;
@@ -592,6 +656,7 @@
             border-radius: 14px;
             margin-top: 4px;
             white-space: pre-wrap;
+            font-size: 14px;
         }
         .rules-block {
             background: #171d2b;
@@ -628,18 +693,18 @@
             border-radius: 12px;
             overflow-x: auto;
             color: #b3ffb3;
-            font-size: 12px;
+            font-size: 11px;
             margin-top: 8px;
         }
         .logout-btn {
             background: none;
             border: 1px solid #ffb347;
             color: #ffb347;
-            padding: 5px 10px;
+            padding: 4px 8px;
             border-radius: 20px;
             cursor: pointer;
-            font-size: 12px;
-            margin-left: 10px;
+            font-size: 11px;
+            margin-left: 5px;
         }
         /* Профіль */
         .profile-info {
@@ -696,6 +761,22 @@
             text-align: center;
             margin: 10px 16px;
             color: #66ff99;
+        }
+        /* Адаптація для дуже малих екранів */
+        @media (max-width: 360px) {
+            .phone {
+                border-radius: 24px;
+            }
+            .nav-item {
+                font-size: 11px;
+            }
+            .auth-btn {
+                width: 110px;
+                font-size: 14px;
+            }
+            .ip-block {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -763,11 +844,19 @@
         <!-- Головний додаток (після входу) -->
         <div id="main-app">
             <div class="header">
-                <h1>FUNWORLD <span>2021vsds</span> <button class="logout-btn" id="logoutBtn">Вийти</button></h1>
+                <h1>
+                    FUNWORLD <span>2021vsds</span>
+                    <button class="logout-btn" id="logoutBtn">Вийти</button>
+                </h1>
                 <div class="server-meta">
                     <span>⚡ Онлайн: 1 342</span>
                     <span>📅 Весна 2026</span>
                 </div>
+            </div>
+
+            <!-- Кнопка IP -->
+            <div class="ip-block" onclick="copyIP()">
+                IP: goureeror.aternos.me <span class="copy-indicator">📋</span>
             </div>
 
             <!-- Блок адміністрації -->
@@ -955,12 +1044,20 @@ def get_admins():
             </div>
         </div>
 
-        <!-- Адмін-панель -->
+        <!-- Адмін-панель (оновлена) -->
         <div id="admin-panel" class="hidden">
             <div style="padding:20px;">
                 <button id="back-to-main" style="background:none; border:none; color:#ffb347; margin-bottom:16px; cursor:pointer;">← На головну</button>
-                <h2 style="color:#ffb347;">Адмін-панель: заяви</h2>
+                <h2 style="color:#ffb347;">Адмін-панель</h2>
+                <div class="admin-tabs">
+                    <div class="admin-tab active" id="tab-applications">📋 Заяви</div>
+                    <div class="admin-tab" id="tab-users">👥 Користувачі</div>
+                </div>
                 <div id="admin-applications-list"></div>
+                <div id="admin-users-list" class="hidden"></div>
+                <div style="margin-top:15px; text-align:right;">
+                    <button class="btn-refresh" id="refresh-admin">🔄 Оновити</button>
+                </div>
             </div>
         </div>
 
@@ -977,9 +1074,7 @@ def get_admins():
             <div style="padding:20px;">
                 <button id="back-from-profile" style="background:none; border:none; color:#ffb347; margin-bottom:16px; cursor:pointer;">← На головну</button>
                 <h2 style="color:#ffb347;">Мій профіль</h2>
-                <div class="profile-info" id="profile-info">
-                    <!-- Дані будуть вставлені JS -->
-                </div>
+                <div class="profile-info" id="profile-info"></div>
                 <div class="change-form">
                     <h3>Зміна пароля</h3>
                     <div id="password-error" class="auth-error"></div>
@@ -1001,6 +1096,20 @@ def get_admins():
     </div>
 
     <script>
+        // Функція копіювання IP
+        window.copyIP = function() {
+            const ip = "goureeror.aternos.me";
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(ip).then(() => {
+                    alert("IP скопійовано!");
+                }).catch(() => {
+                    prompt("Скопіюйте IP вручну:", ip);
+                });
+            } else {
+                prompt("Скопіюйте IP вручну:", ip);
+            }
+        };
+
         (function() {
             // ========== Керування авторизацією ==========
             const authScreen = document.getElementById('auth-screen');
@@ -1049,14 +1158,12 @@ def get_admins():
                 }
             }
 
-            // Перевірка сесії
             function checkSession() {
                 const session = localStorage.getItem('currentUser');
                 if (session) {
                     authScreen.style.display = 'none';
                     mainApp.style.display = 'block';
                     renderAdminList();
-                    // Якщо профіль відкрито, оновити дані
                     if (!document.getElementById('profile-page').classList.contains('hidden')) {
                         renderProfile();
                     }
@@ -1066,7 +1173,6 @@ def get_admins():
                 }
             }
 
-            // Вимикач
             switchEl.addEventListener('click', function() {
                 lightOn = !lightOn;
                 if (lightOn) {
@@ -1108,7 +1214,6 @@ def get_admins():
                 loginError.innerText = '';
             });
 
-            // Реєстрація
             document.getElementById('registerBtn').addEventListener('click', function() {
                 const email = document.getElementById('regEmail').value.trim();
                 const password = document.getElementById('regPassword').value.trim();
@@ -1130,13 +1235,20 @@ def get_admins():
                     return;
                 }
 
-                users.push({ email, password, nick, age: parseInt(age) });
+                // Додаємо дату реєстрації
+                const newUser = {
+                    email,
+                    password,
+                    nick,
+                    age: parseInt(age),
+                    registeredAt: new Date().toLocaleDateString('uk-UA')
+                };
+                users.push(newUser);
                 saveUsers(users);
                 localStorage.setItem('currentUser', JSON.stringify({ nick }));
                 checkSession();
             });
 
-            // Вхід
             document.getElementById('loginBtn').addEventListener('click', function() {
                 const nick = document.getElementById('loginNick').value.trim();
                 const password = document.getElementById('loginPassword').value.trim();
@@ -1157,7 +1269,6 @@ def get_admins():
                 checkSession();
             });
 
-            // Вихід
             document.getElementById('logoutBtn').addEventListener('click', function() {
                 localStorage.removeItem('currentUser');
                 checkSession();
@@ -1209,7 +1320,6 @@ def get_admins():
                 setTimeout(() => flash.innerHTML = '', 4000);
             }
 
-            // Анкета
             const appForm = document.getElementById('application-form');
             if (appForm) {
                 appForm.addEventListener('submit', function(e) {
@@ -1312,26 +1422,17 @@ def get_admins():
             document.getElementById('back-from-rules')?.addEventListener('click', showMainPage);
             document.getElementById('back-from-profile')?.addEventListener('click', showMainPage);
 
-            // Адмін-панель
-            document.getElementById('admin-link')?.addEventListener('click', function() {
-                const pwd = prompt('Введіть пароль адміністратора:');
-                if (pwd === 'admin') {
-                    hideAllPages();
-                    mainPage.style.display = 'none';
-                    adminPanel.classList.remove('hidden');
-                    renderAdminApplications();
-                } else {
-                    alert('Невірний пароль');
-                }
-            });
-
-            document.getElementById('back-to-main')?.addEventListener('click', showMainPage);
+            // ========== Адмін-панель з табами (пароль 123) ==========
+            const adminApplicationsList = document.getElementById('admin-applications-list');
+            const adminUsersList = document.getElementById('admin-users-list');
+            const tabApps = document.getElementById('tab-applications');
+            const tabUsers = document.getElementById('tab-users');
+            const refreshBtn = document.getElementById('refresh-admin');
 
             function renderAdminApplications() {
                 const apps = loadApplications();
-                const container = document.getElementById('admin-applications-list');
                 if (apps.length === 0) {
-                    container.innerHTML = '<p>Немає жодної заяви.</p>';
+                    adminApplicationsList.innerHTML = '<p>Немає жодної заяви.</p>';
                     return;
                 }
 
@@ -1351,9 +1452,72 @@ def get_admins():
                     </tr>`;
                 });
                 html += '</table>';
-                container.innerHTML = html;
+                adminApplicationsList.innerHTML = html;
             }
 
+            function renderAdminUsers() {
+                const users = loadUsers();
+                if (users.length === 0) {
+                    adminUsersList.innerHTML = '<p>Немає зареєстрованих користувачів.</p>';
+                    return;
+                }
+
+                let html = '<table class="admin-table"><tr><th>Email</th><th>Нік</th><th>Вік</th><th>Дата реєстрації</th></tr>';
+                users.sort((a,b) => (a.registeredAt || '').localeCompare(b.registeredAt || '')).forEach(user => {
+                    html += `<tr>
+                        <td>${user.email}</td>
+                        <td>${user.nick}</td>
+                        <td>${user.age}</td>
+                        <td>${user.registeredAt || 'Невідомо'}</td>
+                    </tr>`;
+                });
+                html += '</table>';
+                adminUsersList.innerHTML = html;
+            }
+
+            function showTab(tab) {
+                if (tab === 'applications') {
+                    tabApps.classList.add('active');
+                    tabUsers.classList.remove('active');
+                    adminApplicationsList.classList.remove('hidden');
+                    adminUsersList.classList.add('hidden');
+                    renderAdminApplications();
+                } else {
+                    tabUsers.classList.add('active');
+                    tabApps.classList.remove('active');
+                    adminUsersList.classList.remove('hidden');
+                    adminApplicationsList.classList.add('hidden');
+                    renderAdminUsers();
+                }
+            }
+
+            tabApps.addEventListener('click', () => showTab('applications'));
+            tabUsers.addEventListener('click', () => showTab('users'));
+
+            refreshBtn.addEventListener('click', () => {
+                if (tabApps.classList.contains('active')) {
+                    renderAdminApplications();
+                } else {
+                    renderAdminUsers();
+                }
+            });
+
+            // Змінено пароль на 123
+            document.getElementById('admin-link')?.addEventListener('click', function() {
+                const pwd = prompt('Введіть пароль адміністратора:');
+                if (pwd === '123') {
+                    hideAllPages();
+                    mainPage.style.display = 'none';
+                    adminPanel.classList.remove('hidden');
+                    showTab('applications');
+                } else {
+                    alert('Невірний пароль');
+                }
+            });
+
+            document.getElementById('back-to-main')?.addEventListener('click', showMainPage);
+
+            // Функції для заяв (глобальні для кнопок)
             window.viewApplication = function(id) {
                 const apps = loadApplications();
                 const app = apps.find(a => a.id === id);
@@ -1417,7 +1581,6 @@ def get_admins():
                 `;
             }
 
-            // Зміна пароля
             document.getElementById('change-password-btn').addEventListener('click', function() {
                 const user = getCurrentUser();
                 if (!user) return;
@@ -1454,7 +1617,6 @@ def get_admins():
                 document.getElementById('confirm-password').value = '';
             });
 
-            // Зміна нікнейма
             document.getElementById('change-nick-btn').addEventListener('click', function() {
                 const user = getCurrentUser();
                 if (!user) return;
@@ -1482,7 +1644,6 @@ def get_admins():
                     return;
                 }
 
-                // Видалити старого користувача і додати нового з новим ніком
                 const index = users.findIndex(u => u.nick === user.nick);
                 if (index !== -1) {
                     users.splice(index, 1);
@@ -1497,10 +1658,9 @@ def get_admins():
                 setTimeout(() => messageDiv.innerText = '', 3000);
                 document.getElementById('new-nick').value = '';
                 document.getElementById('nick-password').value = '';
-                renderProfile(); // оновити відображення
+                renderProfile();
             });
 
-            // Ініціалізація
             checkSession();
             renderAdminList();
         })();
