@@ -865,6 +865,14 @@
                 <div class="admin-list" id="admin-list"></div>
             </div>
 
+            <!-- Блок серверів -->
+            <div class="admin-section" style="border-left-color: #4caf50;">
+                <div class="admin-title" style="color: #4caf50;">🖥️ Наші сервери</div>
+                <div class="admin-list" id="servers-list">
+                    <div style="color: #6f7c9f; text-align: center; padding: 10px;">Завантаження...</div>
+                </div>
+            </div>
+
             <!-- Кнопка переходу до анкети -->
             <button class="apply-button" id="show-apply-form">📋 Подати заявку на адміністратора</button>
 
@@ -962,25 +970,6 @@
             <div class="section-title">📄 Документи</div>
             <div style="background:#171d2b; margin:0 16px 16px; padding:14px; border-radius:18px;">
                 <span style="font-size:24px; font-weight:700; color:#ffe484;">47 док.</span>
-            </div>
-
-            <!-- Технології -->
-            <div class="tech-info">
-                <strong style="color:#4caf50;">⚙️ Технології проєкту</strong>
-                <p style="margin-top:6px;">C++ оновлює файл <code>admin_counts.json</code>. Python (Flask) віддає через API. HTML/JS — інтерфейс.</p>
-                <pre>// C++ (приклад)
-#include &lt;fstream&gt;
-#include "json.hpp"
-using json = nlohmann::json;
-int main() {
-    json data = {{"Owner","1/1"},{"Helper","0/4"}};
-    std::ofstream("admin_counts.json") << data.dump(4);
-}</pre>
-                <pre># Python (Flask)
-@app.route('/api/admins')
-def get_admins():
-    with open('admin_counts.json') as f:
-        return jsonify(json.load(f))</pre>
             </div>
 
             <!-- Нижнє меню -->
@@ -1164,6 +1153,7 @@ def get_admins():
                     authScreen.style.display = 'none';
                     mainApp.style.display = 'block';
                     renderAdminList();
+                    renderServers();
                     if (!document.getElementById('profile-page').classList.contains('hidden')) {
                         renderProfile();
                     }
@@ -1313,6 +1303,56 @@ def get_admins():
                 }
             }
 
+            // Завантаження та відображення серверів
+            async function renderServers() {
+                const container = document.getElementById('servers-list');
+                if (!container) return;
+                
+                try {
+                    const response = await fetch('/api/servers');
+                    const servers = await response.json();
+                    
+                    if (servers.length === 0) {
+                        container.innerHTML = '<div style="color: #6f7c9f; text-align: center; padding: 10px;">Немає зареєстрованих серверів</div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = servers.map(server => {
+                        const statusColor = server.status === 'online' ? '#66ff99' : 
+                                           server.status === 'offline' ? '#ff6666' : '#ffaa66';
+                        const statusText = server.status === 'online' ? '🟢 Онлайн' : 
+                                          server.status === 'offline' ? '🔴 Офлайн' : '🟡 Техроботи';
+                        return `
+                            <div class="admin-item" style="flex-direction: column; align-items: flex-start; gap: 4px;">
+                                <div style="display: flex; justify-content: space-between; width: 100%;">
+                                    <span class="admin-role" style="font-weight: 600;">${server.name}</span>
+                                    <span style="color: ${statusColor}; font-size: 12px;">${statusText}</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                                    <code style="background: #272f41; padding: 4px 8px; border-radius: 8px; font-size: 12px; color: #b3c7ff;">${server.ip}</code>
+                                    <button onclick="copyServerIP('${server.ip}')" style="background: #3a455b; border: none; color: #fff; padding: 4px 10px; border-radius: 12px; cursor: pointer; font-size: 12px;">📋 Копіювати</button>
+                                </div>
+                                ${server.description ? `<div style="color: #9aa5c9; font-size: 12px; margin-top: 4px;">${server.description}</div>` : ''}
+                            </div>
+                        `;
+                    }).join('');
+                } catch (error) {
+                    container.innerHTML = '<div style="color: #ff6666; text-align: center; padding: 10px;">Помилка завантаження серверів</div>';
+                }
+            }
+
+            window.copyServerIP = function(ip) {
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(ip).then(() => {
+                        alert('IP скопійовано: ' + ip);
+                    }).catch(() => {
+                        prompt('Скопіюйте IP вручну:', ip);
+                    });
+                } else {
+                    prompt('Скопіюйте IP вручну:', ip);
+                }
+            };
+
             function showFlash(message, category, containerId = 'apply-flash') {
                 const flash = document.getElementById(containerId);
                 if (!flash) return;
@@ -1379,6 +1419,7 @@ def get_admins():
                 if (applyButton) applyButton.style.display = 'block';
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 document.querySelector('[data-page="main"]').classList.add('active');
+                renderServers();
             }
 
             document.querySelectorAll('.nav-item').forEach(item => {
@@ -1663,6 +1704,7 @@ def get_admins():
 
             checkSession();
             renderAdminList();
+            renderServers();
         })();
     </script>
 </body>

@@ -24,6 +24,7 @@ def verify_password(username, password):
 # Файли даних
 ADMIN_DATA_FILE = 'admin_counts.json'
 APPLICATIONS_FILE = 'applications.json'
+SERVERS_FILE = 'servers.json'
 
 # Дані за замовчуванням для адмінів
 DEFAULT_ADMINS = {
@@ -50,6 +51,16 @@ def load_applications():
 def save_applications(apps):
     with open(APPLICATIONS_FILE, 'w', encoding='utf-8') as f:
         json.dump(apps, f, ensure_ascii=False, indent=4)
+
+def load_servers():
+    if os.path.exists(SERVERS_FILE):
+        with open(SERVERS_FILE, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return []
+
+def save_servers(servers):
+    with open(SERVERS_FILE, 'w', encoding='utf-8') as f:
+        json.dump(servers, f, ensure_ascii=False, indent=4)
 
 @app.route('/')
 def index():
@@ -137,6 +148,67 @@ def update_application(app_id, action):
             break
     save_applications(apps)
     return redirect(url_for('admin_applications'))
+
+@app.route('/api/servers')
+def get_servers():
+    servers = load_servers()
+    return jsonify(servers)
+
+@app.route('/admin/servers')
+@auth.login_required
+def admin_servers():
+    servers = load_servers()
+    return render_template('admin_servers.html', servers=servers)
+
+@app.route('/admin/servers/add', methods=['POST'])
+@auth.login_required
+def add_server():
+    name = request.form.get('name')
+    ip = request.form.get('ip')
+    description = request.form.get('description', '')
+    status = request.form.get('status', 'online')
+    
+    if not name or not ip:
+        flash('Назва та IP обов\'язкові', 'error')
+        return redirect(url_for('admin_servers'))
+    
+    servers = load_servers()
+    new_id = max([s['id'] for s in servers], default=0) + 1
+    servers.append({
+        'id': new_id,
+        'name': name,
+        'ip': ip,
+        'description': description,
+        'status': status,
+        'created_at': datetime.now().isoformat()
+    })
+    save_servers(servers)
+    flash('Сервер додано успішно', 'success')
+    return redirect(url_for('admin_servers'))
+
+@app.route('/admin/servers/<int:server_id>/edit', methods=['POST'])
+@auth.login_required
+def edit_server(server_id):
+    servers = load_servers()
+    for server in servers:
+        if server['id'] == server_id:
+            server['name'] = request.form.get('name', server['name'])
+            server['ip'] = request.form.get('ip', server['ip'])
+            server['description'] = request.form.get('description', server['description'])
+            server['status'] = request.form.get('status', server['status'])
+            break
+    save_servers(servers)
+    flash('Сервер оновлено', 'success')
+    return redirect(url_for('admin_servers'))
+
+@app.route('/admin/servers/<int:server_id>/delete', methods=['POST'])
+@auth.login_required
+def delete_server(server_id):
+    servers = load_servers()
+    servers = [s for s in servers if s['id'] != server_id]
+    save_servers(servers)
+    flash('Сервер видалено', 'success')
+    return redirect(url_for('admin_servers'))
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
